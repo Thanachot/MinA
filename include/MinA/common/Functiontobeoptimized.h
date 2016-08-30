@@ -8,12 +8,47 @@
 #include <algorithm>
 #include <iterator>
 #include <memory>
-
+#include <sstream>
+#include "MinA/common/Exception.h"
+#include "MinA/common/Log.h"
  using namespace std;
+ enum handle_arith {MinA_EHIGH,MinA_ETHROW,MinA_EWARN};
 class Functiontobeoptimized{
+  private:
+handle_arith handle;
     public:
-	virtual double evaluate(std::map <string, double> para)=0;
-	int getparametersize(){return parameters.size();}
+        Functiontobeoptimized():handle(MinA_ETHROW){}
+        void setHandle(handle_arith ha){handle=ha;}
+        double evaluate(std::map<string,double> para){
+          double result;
+          try
+          {
+            result=getEvaluation(para);
+            if (!std::isfinite(result))throw Arithmetical_Exception(result); 
+          }
+          catch(Arithmetical_Exception & ae){
+            stringstream err;
+            switch (handle){
+              case MinA_EHIGH:
+                err <<"Exception caught:" << ae.what()<<". Returning very high Value (10E+7) \n";
+                Log::getLog() <<err.str();
+                Log::getLog().flushLog();
+                result=10000000.0;
+                break;
+              case MinA_ETHROW:
+                err <<"Exception caught:" << ae.what()<<". Rethrowing Exception";
+                throw;
+                break;
+              case MinA_EWARN:  
+                err <<"Exception caught:" << ae.what()<<". Printing out this warning";
+                result=ae.getDoubleValue();
+                break;
+            }
+          }
+        return result;
+        }
+	virtual double getEvaluation(std::map <string, double> para)=0;
+        int getparametersize(){return parameters.size();}
 	std::set<Parameter> parameters;
     protected:
 	

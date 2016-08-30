@@ -25,7 +25,7 @@ class Myfunction:public Functiontobeoptimized{
 		
 	};
 
-	double evaluate(std::map <string, double> para){
+	double getEvaluation(std::map <string, double> para){
 	return pow(para["x"],2)+pow(para["y"],2)+pow(para["z"],2);
 	}
  
@@ -44,7 +44,7 @@ class Himmelblaufunction:public Functiontobeoptimized{
 		//parameters.insert("y");
 	};
 
-	double evaluate(std::map <string, double> para){
+	double getEvaluation(std::map <string, double> para){
 	
 	return (para["x"]*para["x"]+para["y"]-11)*(para["x"]*para["x"]+para["y"]-11)+(para["x"]+para["y"]*para["y"]-7)*(para["x"]+para["y"]*para["y"]-7);
 	}
@@ -63,7 +63,7 @@ class Boot_s_function:public Functiontobeoptimized{
 		
 	};
 
-	double evaluate(std::map <string, double> para){
+	double getEvaluation(std::map <string, double> para){
 	
 	return pow((para["x"]+2*para["y"]-7),2)+pow((2*para["x"]+para["y"]-5),2);
 	}
@@ -85,7 +85,7 @@ class Michalewicz_function:public Functiontobeoptimized{
 		
 	};
 
-	double evaluate(std::map <string, double> para){
+	double getEvaluation(std::map <string, double> para){
 	double fz;
 	fz=-sin(para["x"])*pow(sin(pow(para["x"],2)/PI),2)-sin(para["x"])*pow(sin(2*pow(para["y"],2)/PI),2);//-sin(para["z"])*pow(sin(3*pow(para["z"],2)/PI),2);
 	return fz;

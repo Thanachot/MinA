@@ -1,3 +1,13 @@
+build
+lib
+*.exe
+*.txt
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+CTestTestfile.cmake 
+Testing
+Makefile
 *.o
 */*/*.o
 */*/.o

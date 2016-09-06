@@ -2,7 +2,7 @@
 #define SIMPLEXPARALLEL_H
 #include <map>
 #include <iostream>
-#include<memory>
+#include <memory>
 #include "mpi.h"
 #include <boost/serialization/vector.hpp>
 #include "MinA/common/OptimizationAlgorithm.h"
@@ -11,23 +11,19 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include "MinA/algorithm/Simplex.h"
-//#include <boost/mpi.hpp>
 
+typedef std::pair<std::map<std::string, double>, double> vertex;
+typedef std::vector<std::pair<std::map<std::string, double>, double>> vertexVector;
 
-typedef std::pair <std::map <std::string, double>,double> vertex;
-typedef std::vector<std::pair <std::map <std::string, double>,double>> vertexVector;
+class SimplexParallel : public Simplex {
+  public:
+    SimplexParallel(int stop = 100);
+    ~SimplexParallel();
+    Result algorithm(std::shared_ptr<FunctionToBeOptimized> start);
+    void sendVertex(vertex& A, int receiver, int tag);
+    vertex receiveVertex(int sender, int tag);
+    void calculateAc(vertex& Ac, vertex& M, vertex& Ajp);
 
-class SimplexParallel:public Simplex{
-    public:
-	SimplexParallel(int stop = 100 );
-	~SimplexParallel();
-	Result algorithm(std::shared_ptr<Functiontobeoptimized> start);
-	void sendVertex(vertex &A,int receiver,int tag);
-	vertex receiveVertex(int sender,int tag);
-	void calculateAc(vertex &Ac,vertex &M,vertex &Ajp);
-	
-    protected:
-  
 };
 
 #endif

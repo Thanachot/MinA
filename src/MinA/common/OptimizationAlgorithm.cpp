@@ -1,21 +1,32 @@
 #include "MinA/common/OptimizationAlgorithm.h"
 
-OptimizationAlgorithm::~OptimizationAlgorithm(){;}
-void OptimizationAlgorithm::setOptimizationAlgorithmParameter(string nam,double nu){
-		optimizationAlgorithmParameter[nam]=nu;
+OptimizationAlgorithm::~OptimizationAlgorithm()
+{
+    ;
 }
 
-double OptimizationAlgorithm::getOptimizationAlgorithmParameter(string nam){
-		return optimizationAlgorithmParameter[nam];
+void OptimizationAlgorithm::setOptimizationAlgorithmParameter(string nam, double nu)
+{
+    optimizationAlgorithmParameter[nam] = nu;
 }
 
-std::map <string, string> OptimizationAlgorithm::getAdditionalInformation()const{
-	return additionalInformation;
+double OptimizationAlgorithm::getOptimizationAlgorithmParameter(string nam)
+{
+    return optimizationAlgorithmParameter[nam];
 }
 
-void OptimizationAlgorithm::setAdditionalInformation(std::map <string, string> additionalInformation_re){
-	additionalInformation=additionalInformation_re;
+std::map<string, string> OptimizationAlgorithm::getAdditionalInformation() const
+{
+    return additionalInformation;
 }
-void OptimizationAlgorithm::setAdditionalInformation(string s1,string s2){
-	additionalInformation[s1]=s2;
+
+void OptimizationAlgorithm::setAdditionalInformation(
+  std::map<string, string> additionalInformation_re)
+{
+    additionalInformation = additionalInformation_re;
+}
+
+void OptimizationAlgorithm::setAdditionalInformation(string s1, string s2)
+{
+    additionalInformation[s1] = s2;
 }

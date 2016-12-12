@@ -16,11 +16,24 @@
 
 typedef std::pair<std::vector<double>, double> vertex;
 typedef std::vector<vertex> verticesVector;
+/**
+ * @class Simplex
+ * @brief Class implementing the serial Nelder-Mead Simplex algorithm
+ */
 class Simplex : public OptimizationAlgorithm {
   public:
+    /**
+     * constructor
+     */
     Simplex(int stop = 100);
     ~Simplex();
-    virtual Result algorithm(std::shared_ptr<FunctionToBeOptimized> start);
+
+    /**
+     * Run the Simplex algorithm on the cost function passed as argument, returning the result
+     * @param costFunction The function to be optimized
+     * @return Result object
+     */
+    virtual Result algorithm(std::shared_ptr<FunctionToBeOptimized> costFunction);
     void printOutVertices(verticesVector& simplexVertices, std::ostream& outStream = std::cout);
     void printOutVertex(vertex& simplexVertex, std::string vertexName,
                         std::ostream& outStream = std::cout);

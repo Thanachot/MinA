@@ -17,11 +17,21 @@ Simplex::Simplex(int stop)
 
 Simplex::~Simplex() {}
 
-Result Simplex::algorithm(shared_ptr<FunctionToBeOptimized> start)
+/**
+ * Implementation of the serial Nelder-Mead Simplex on the cost function passed as argument
+ * The original article describing the algorithm is:
+ * ``A simplex method for function minimization'', J. Nelder, and R. Mead. Computer Journal (1965).
+ * Good articles describing its flow w.r.t. its parallel implementation are:
+ * ``A Parallel Implementation of the Simplex Function Minimization Routine'', D. Lee, and M.
+ * Wiswall. Computational Economics (2007)
+ * ``Nelder-Mead Simplex Optimization Routine for Large-Scale Problems: A Distributed Memory
+ * Implementation'', K. Klein, and J. Neira. Computational Economics (2013)
+ */
+Result Simplex::algorithm(shared_ptr<FunctionToBeOptimized> costFunction)
 {
 
-    mFunction = start;
-    mDimension = start->getParSpaceDim();
+    mFunction = costFunction;
+    mDimension = costFunction->getParSpaceDim();
     setStepSize();
 
     verticesVector A;
@@ -40,7 +50,7 @@ Result Simplex::algorithm(shared_ptr<FunctionToBeOptimized> start)
 
         vertex Ar, Ac, Ae, Anew, Ap; // reflection, contraction, extension, shrinked point
         for (int iVertex = 0; iVertex <= mDimension; ++iVertex)
-            A[iVertex].second = start->getEvaluation(A[iVertex].first);
+            A[iVertex].second = costFunction->getEvaluation(A[iVertex].first);
 
         sort(A.begin(), A.end(),
              [](vertex& a, vertex& b) -> bool { return a.second < b.second; }); // Sort
@@ -104,12 +114,15 @@ Result Simplex::algorithm(shared_ptr<FunctionToBeOptimized> start)
         fValueFile.close();
     }
 
-    // Return result*/
-    Result rs;
-    pushResult(rs, A[0]);
-    return rs;
+    Result result;
+    pushResult(result, A[0]);
+    return result;
 }
 
+/**
+ * If the vector of step sizes is not already set, set it in each dimension to equal
+ * the minimum distance between the starting point and the left/right boundary
+ */
 void Simplex::setStepSize()
 {
     if (stepSize.empty()) {
@@ -123,10 +136,21 @@ void Simplex::setStepSize()
     }
 }
 
+/**
+ * Set the vector of step sizes to the vector passed as argument
+ * @param s Step sizes to genereate nDimension vertices from the initial point
+ */
 void Simplex::setStepSize(vector<double> s) { stepSize = s; }
 
+/**
+ * Set the function name to the argument
+ * @param name The string to be assigned as function name
+ */
 void Simplex::setFunctionName(string name) { FunctionName = name; }
 
+/**
+ * Get the function name
+ */
 string Simplex::getFunctionName() { return FunctionName; }
 
 void Simplex::setStoppingIteration(int n) { stoppingIteration = n; }
